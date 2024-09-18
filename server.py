@@ -25,6 +25,10 @@ class UploadHandler(SimpleHTTPRequestHandler):
 
         copied_count = 0
         skipped_count = 0
+        if not isinstance(files, list):
+            files = [files]
+        if not isinstance(sizes, list):
+            sizes = [sizes]        
 
         for file, size in zip(files, sizes):
             if file.filename:

@@ -14,12 +14,14 @@ document.getElementById('uploadButton').addEventListener('click', function() {
     }
 
     const batchSizeLimit = 100;
-    const batchSizeLimitBytes = 1 * 1024 * 1024 * 1024; // 1 GB
+    const batchSizeLimitBytes = 20 * 1024 * 1024; // 20 MB
     let currentIndex = 0;
     let totalCopied = 0;
     let totalSkipped = 0;
-    let totalBatches = Math.ceil(files.length / batchSizeLimit);
-    let currentBatch = 0;
+    // let totalBatches = Math.ceil(files.length / batchSizeLimit);
+    const totalSize = Array.from(files).reduce((accumulator, file) => accumulator + file.size, 0);
+    // let currentBatch = 0;
+    let currentSize  = 0;
     let startTime = Date.now();
 
     const progressBarFill = document.querySelector('.progress-bar-fill');
@@ -57,8 +59,9 @@ document.getElementById('uploadButton').addEventListener('click', function() {
                 totalCopied += response.copied;
                 totalSkipped += response.skipped;
 
-                currentBatch++;
-                const progress = (currentBatch / totalBatches) * 100;
+                // currentBatch++;
+                currentSize+=batchTotalSize;
+                const progress = (currentSize / totalSize) * 100;
                 progressBarFill.style.width = `${progress}%`;
                 progressBarText.textContent = `${progress.toFixed(2)}%`;
 
